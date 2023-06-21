@@ -103,3 +103,17 @@ class Provider(DataCite):
 
     def __init__(self, query_params=None):
         super(Provider, self).__init__(end_point=self.end_point, query_params=query_params)
+
+
+def slice_list(num, list_to_break):
+    broken_list = []
+    for index, item in enumerate(list_to_break):
+        index += 1
+        broken_list.append(item)
+        print(index % num)
+        if index % num == 0:
+            yield broken_list
+            broken_list = []
+    else:
+        if len(broken_list) != 0:
+            yield broken_list
