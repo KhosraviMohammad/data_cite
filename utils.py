@@ -108,6 +108,16 @@ class Provider(DataCite):
     def __init__(self, query_params=None):
         super(Provider, self).__init__(end_point=self.end_point, query_params=query_params)
 
+    def get_clients(self):
+        providers = self.providers
+        client_list = []
+        for provider in providers:
+            relationships = provider.get('relationships')
+            clients = relationships.get('clients').get('data')
+            for client in clients:
+                client_list.append(client.get('id'))
+        return client_list
+
 
 def slice_list(num, list_to_break):
     broken_list = []
