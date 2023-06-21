@@ -1,16 +1,22 @@
-# This is a sample Python script.
+from builtins import quit
+from itertools import count
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from utils import Provider, Client, Doi, slice_list
 
 
-# Press the green button in the gutter to run the script.
+def get_client_doi_count(*, consortium_id):
+    client_and_doi = []
+    client = Client(query_params={'consortium-id': consortium_id})
+    client.get_all_data()
+    cleared_data = client.get_main_data()
+    all_clients = cleared_data.get('all_clients')
+    for client_id in all_clients:
+        doi = Doi(query_params={'client_id': client_id})
+        doi.get_data(count=1)
+        doi_count = doi.meta.get('total')
+        client_and_doi.append({'client': client_id, 'doi_count': doi_count})
+    return client_and_doi
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    get_client_doi_count(consortium_id='daraco')
