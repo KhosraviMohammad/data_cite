@@ -5,7 +5,7 @@ import json
 
 
 class DataCite:
-    base_url = "https://api.test.datacite.org/{end_point}?{query_params}"
+    base_url = "https://api.datacite.org/{end_point}?{query_params}"
     headers = {"accept": "application/vnd.api+json"}
 
     def __init__(self, end_point, query_params=None, headers=None):
