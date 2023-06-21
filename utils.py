@@ -31,6 +31,7 @@ class DataCite:
         self.item_count = meta.get('total')
         self.current_page = meta.get('page')
         self.page_count = meta.get('totalPages')
+        self.meta = meta
         setattr(self, self.__class__.__name__.lower() + 's', data)
 
     def get_all_data(self, *args, **kwargs):
@@ -49,6 +50,7 @@ class DataCite:
             response_content = json.loads(response.content)
             next_page_data = response_content.get('data')
             data.extend(next_page_data)
+        self.meta = meta
         setattr(self, self.__class__.__name__.lower() + 's', data)
 
     @classmethod
