@@ -54,17 +54,33 @@ class DataCite:
     @classmethod
     def make_query_value(self, values):
         query_value = f'({values[0]}/*)'
-        for value in values[:len(values)-1]:
+        for value in values[:len(values) - 1]:
             query_value += f'OR({value}/*)'
         return query_value
 
-
     def cache(self, *args, **kwargs):
         pass
-
 
     def get_cache(self, *args, **kwargs):
         pass
 
 
+class Doi(DataCite):
+    end_point = "dois"
 
+    def __init__(self, query_params=None):
+        super(Doi, self).__init__(end_point=self.end_point, query_params=query_params)
+
+
+class Client(DataCite):
+    end_point = "clients"
+
+    def __init__(self, query_params=None):
+        super(Client, self).__init__(end_point=self.end_point, query_params=query_params)
+
+
+class Provider(DataCite):
+    end_point = "providers"
+
+    def __init__(self, query_params=None):
+        super(Provider, self).__init__(end_point=self.end_point, query_params=query_params)
