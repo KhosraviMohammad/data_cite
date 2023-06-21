@@ -84,6 +84,7 @@ class Client(DataCite):
         clients = self.clients
         cleared_client_data_list = []
         all_prefixes = []
+        all_clients = []
         for client in clients:
             id = client.get('id')
             relationships = client.get('relationships')
@@ -96,8 +97,9 @@ class Client(DataCite):
                 'id': id,
                 'prefixes': cleared_prefixes,
             }
+            all_clients.append(id)
             cleared_client_data_list.append(cleared_client_data)
-        return {'main_data': cleared_client_data_list, 'all_prefixes': all_prefixes}
+        return {'main_data': cleared_client_data_list, 'all_prefixes': all_prefixes, 'all_clients': all_clients}
 
 
 class Provider(DataCite):
