@@ -56,7 +56,7 @@ class DataCite:
     @classmethod
     def make_query_value(self, values):
         query_value = f'({values[0]}/*)'
-        for value in values[:len(values) - 1]:
+        for value in values[1:len(values) - 1]:
             query_value += f'OR({value}/*)'
         return query_value
 
