@@ -19,4 +19,4 @@ def get_client_doi_count(*, consortium_id):
 
 
 if __name__ == '__main__':
-    get_client_doi_count(consortium_id='daraco')
+    print(get_client_doi_count(consortium_id='daraco'))
