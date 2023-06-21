@@ -2,6 +2,7 @@ from logging.config import valid_ident
 
 import requests
 import json
+from collections import OrderedDict
 
 
 class DataCite:
@@ -72,6 +73,21 @@ class Doi(DataCite):
 
     def __init__(self, query_params=None):
         super(Doi, self).__init__(end_point=self.end_point, query_params=query_params)
+
+    def get_main_data(self):
+        dois = self.dois
+        doi_main_information = OrderedDict()
+        for doi in dois:
+            id = doi.get('id')
+            relationships = doi.get('relationships')
+            client = relationships.get('client').get('data').get('id')
+            if client in doi_main_information:
+                client = doi_main_information.get(client)
+                client.get('doi_ids').append(id)
+                client['count'] = client.get('count') + 1
+            else:
+                doi_main_information.update({client: {'doi_ids': [id], 'count': 1}})
+        return doi_main_information
 
 
 class Client(DataCite):
