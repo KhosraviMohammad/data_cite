@@ -55,7 +55,7 @@ class DataCite:
         setattr(self, self.__class__.__name__.lower() + 's', data)
 
     @classmethod
-    def make_query_value(self, values):
+    def generate_query_value(self, values):
         query_value = f'({values[0]}/*)'
         for value in values[1:len(values) - 1]:
             query_value += f'OR({value}/*)'
@@ -74,48 +74,12 @@ class Doi(DataCite):
     def __init__(self, query_params=None):
         super(Doi, self).__init__(end_point=self.end_point, query_params=query_params)
 
-    def get_main_data(self):
-        dois = self.dois
-        doi_main_information = OrderedDict()
-        for doi in dois:
-            id = doi.get('id')
-            relationships = doi.get('relationships')
-            client = relationships.get('client').get('data').get('id')
-            if client in doi_main_information:
-                client = doi_main_information.get(client)
-                client.get('doi_ids').append(id)
-                client['count'] = client.get('count') + 1
-            else:
-                doi_main_information.update({client: {'doi_ids': [id], 'count': 1}})
-        return doi_main_information
-
 
 class Client(DataCite):
     end_point = "clients"
 
     def __init__(self, query_params=None):
         super(Client, self).__init__(end_point=self.end_point, query_params=query_params)
-
-    def get_main_data(self):
-        clients = self.clients
-        cleared_client_data_list = []
-        all_prefixes = []
-        all_clients = []
-        for client in clients:
-            id = client.get('id')
-            relationships = client.get('relationships')
-            prefixes = relationships.get('prefixes').get('data')
-            cleared_prefixes = []
-            for index in range(len(prefixes)):
-                cleared_prefixes.append(prefixes[index].get('id'))
-                all_prefixes.append(prefixes[index].get('id'))
-            cleared_client_data = {
-                'id': id,
-                'prefixes': cleared_prefixes,
-            }
-            all_clients.append(id)
-            cleared_client_data_list.append(cleared_client_data)
-        return {'main_data': cleared_client_data_list, 'all_prefixes': all_prefixes, 'all_clients': all_clients}
 
 
 class Provider(DataCite):
