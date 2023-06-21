@@ -78,6 +78,25 @@ class Client(DataCite):
     def __init__(self, query_params=None):
         super(Client, self).__init__(end_point=self.end_point, query_params=query_params)
 
+    def get_main_data(self):
+        clients = self.clients
+        cleared_client_data_list = []
+        all_prefixes = []
+        for client in clients:
+            id = client.get('id')
+            relationships = client.get('relationships')
+            prefixes = relationships.get('prefixes').get('data')
+            cleared_prefixes = []
+            for index in range(len(prefixes)):
+                cleared_prefixes.append(prefixes[index].get('id'))
+                all_prefixes.append(prefixes[index].get('id'))
+            cleared_client_data = {
+                'id': id,
+                'prefixes': cleared_prefixes,
+            }
+            cleared_client_data_list.append(cleared_client_data)
+        return {'main_data': cleared_client_data_list, 'all_prefixes': all_prefixes}
+
 
 class Provider(DataCite):
     end_point = "providers"
